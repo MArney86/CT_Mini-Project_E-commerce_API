@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "81d24123-25cd-46ae-9fe2-915bddc33b8d",
+		"name": "Bonus Features",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37451996"
+	},
+	"item": [
+		{
+			"name": "Check Product Stock Levels",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/products/checkstock",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"checkstock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Customer Order History",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/orders/orderhistory?customer_id",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"orders",
+						"orderhistory"
+					],
+					"query": [
+						{
+							"key": "customer_id",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
