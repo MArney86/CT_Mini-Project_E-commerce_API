@@ -1,13 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from db_login import db_password, db_user
 from flask_marshmallow import Marshmallow
 from marshmallow import fields, validate
 from marshmallow import ValidationError
 import re
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{db_user}:{db_password}@localhost/e_commerce_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:6yhn*UHB6tfc@localhost/e_commerce_db'
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
@@ -33,6 +32,7 @@ class Order(db.Model):
     date = db.Column(db.Date, nullable=False)
     expected_delivery = db.Column(db.Date)
     customer_id = db.Column(db.Integer, db.ForeignKey('Customers.id'))
+    products = db.relationship('Product', backref=db.backref('orders'))
 
 order_product = db.Table('Order_Product', 
     db.Column('order_id', db.Integer, db.ForeignKey('Orders.id'), primary_key=True), 
@@ -44,7 +44,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Float, nullable=False)
-    stock_quantity = db.Column
+    stock_quantity = db.Column(db.Integer)
     orders = db.relationship('Order', secondary=order_product, backref=db.backref('products'))
 
 class ProductSchema(ma.Schema):
@@ -251,7 +251,7 @@ def add_product():
         return jsonify(err.messages),400
     
     #create new product, add to database and commit
-    new_product = Product(product_name=product_data['product_name'], price=product_data['price'], quantity=product_data['stock_quantity'])
+    new_product = Product(product_name=product_data['product_name'], price=product_data['price'], stock_quantity=product_data['stock_quantity'])
     db.session.add(new_product)
     db.session.commit()
     
